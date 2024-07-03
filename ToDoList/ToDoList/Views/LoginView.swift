@@ -9,39 +9,35 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @State var email = ""
-    @State var password = ""
+    @StateObject var viewModel = LoginViewViewModel()
     
     var body: some View {
         NavigationView {
             VStack {
                 // Header
-                HeaderView()
+                HeaderView(title: "To Do List", subtitle: "Get things done", angle: 15, background: .pink)
                 
                 // Login Form
                 Form{
-                    TextField("Email Address", text: $email)
+                    TextField("Email Address", text: $viewModel.email)
+                        .textFieldStyle(DefaultTextFieldStyle())
+                        .autocapitalization(.none)
+                        .autocorrectionDisabled()
+                    
+                    SecureField("Password", text: $viewModel.password)
                         .textFieldStyle(DefaultTextFieldStyle())
                     
-                    SecureField("Password", text: $password)
-                        .textFieldStyle(DefaultTextFieldStyle())
+                    TLButton(
+                        title: "Log In",
+                        background: .blue
+                    ) {
+                        // Attempt log in
+                        viewModel.login()
+                    }
                     
-                    Button(action: {
-                        //
-                    },
-                           label: {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 10)
-                                .foregroundColor(Color.blue)
-                            
-                            Text("Log In")
-                                .foregroundColor(Color.white)
-                                .bold()
-                        }
-                    })
-                    .padding()
                     
                 }
+                .offset(y: -50)
                 
                 // Create Account
                 VStack {
